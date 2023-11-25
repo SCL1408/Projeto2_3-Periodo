@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Telas;
 
 import java.awt.Color;
@@ -10,10 +6,6 @@ import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
-/**
- *
- * @author saler
- */
 public class Formulario extends javax.swing.JFrame {
 
 

@@ -11,7 +11,7 @@ public class ConexaoBanco {
     public ConexaoBanco()
     {
         this.servidor = "200.195.178.52";
-        this.banco = "grupo5_Saler_Projeto2";
+        this.banco = "grupo5_saler_projeto2";
         this.usuario = "grupo5";
         this.senha = "xpJHCEEGbU4mSys2";
     }

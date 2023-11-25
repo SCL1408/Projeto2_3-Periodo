@@ -1,16 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Telas;
 
+import dao.EstatisticaDao;
+import dao.HumanoDao;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import javax.swing.JPanel;
+import modelos.ModeloEstatistica;
 
-/**
- *
- * @author saler
- */
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+
 public class TelaPrincipal extends javax.swing.JFrame {
 
     public TelaPrincipal() {
@@ -21,53 +33,105 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        panelChart = new javax.swing.JPanel();
+        panelLog = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        panelHeader = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        panelChartLog = new javax.swing.JPanel();
+        panelTabela = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbHumanos = new javax.swing.JTable();
-        btnEditar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        btnSair = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        btnCadastrar = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        listaIDS = new java.awt.List();
+
+        panelChart.setPreferredSize(new Dimension(300, 250));
+        panelChart.setBackground(Color.RED); // Apenas para identificação visual
+
+        javax.swing.GroupLayout panelChartLayout = new javax.swing.GroupLayout(panelChart);
+        panelChart.setLayout(panelChartLayout);
+        panelChartLayout.setHorizontalGroup(
+            panelChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        panelChartLayout.setVerticalGroup(
+            panelChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        panelLog.setPreferredSize(new Dimension(300, 250));
+        //panelLog.setBackground(Color.BLUE); // Apenas para identificação visual
+        panelLog.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout panelLogLayout = new javax.swing.GroupLayout(panelLog);
+        panelLog.setLayout(panelLogLayout);
+        panelLogLayout.setHorizontalGroup(
+            panelLogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        panelLogLayout.setVerticalGroup(
+            panelLogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(0, 255, 0));
+        setBackground(new java.awt.Color(153, 0, 255));
         setMaximumSize(new java.awt.Dimension(1280, 800));
         setMinimumSize(new java.awt.Dimension(1280, 800));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(153, 0, 255));
         jPanel1.setMaximumSize(new java.awt.Dimension(1280, 300));
         jPanel1.setMinimumSize(new java.awt.Dimension(1280, 300));
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 300));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
-        jScrollPane1.setMaximumSize(new java.awt.Dimension(1200, 300));
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(1200, 300));
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(1200, 300));
+        panelHeader.setBackground(new java.awt.Color(255, 0, 51));
+        panelHeader.setForeground(new java.awt.Color(255, 0, 51));
+        panelHeader.setOpaque(false);
+        panelHeader.setLayout(new javax.swing.BoxLayout(panelHeader, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 3, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Controle");
+        panelHeader.add(jLabel1);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/Alien1.png"))); // NOI18N
+        panelHeader.add(jLabel2);
+
+        jPanel1.add(panelHeader);
+
+        panelChartLog.setLayout(new javax.swing.BoxLayout(panelChartLog, javax.swing.BoxLayout.X_AXIS));
+
+        panelChartLog.add(panelChart);
+        panelChartLog.add(Box.createHorizontalGlue());
+        panelChartLog.add(panelLog);
+
+        jPanel1.add(panelChartLog);
+
+        panelTabela.setLayout(new java.awt.CardLayout());
 
         tbHumanos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nome", "Sexualidade", "Rotulo", "Logradouro", "Número", "Complemento", "Bairro", "Cidade", "Estado"
+                "Nome", "Sexo", "Categoria", "Logradouro", "Numero", "Complemento", "Bairro", "Cidade", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true
+                false, false, true, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tbHumanos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tbHumanos.setMaximumSize(new java.awt.Dimension(1000, 300));
-        tbHumanos.setMinimumSize(new java.awt.Dimension(1000, 300));
-        tbHumanos.setName(""); // NOI18N
-        tbHumanos.setPreferredSize(new java.awt.Dimension(1000, 300));
         jScrollPane1.setViewportView(tbHumanos);
         if (tbHumanos.getColumnModel().getColumnCount() > 0) {
             tbHumanos.getColumnModel().getColumn(0).setResizable(false);
@@ -81,149 +145,75 @@ public class TelaPrincipal extends javax.swing.JFrame {
             tbHumanos.getColumnModel().getColumn(8).setResizable(false);
         }
 
-        btnEditar.setBackground(new java.awt.Color(0, 102, 255));
-        btnEditar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
-        btnEditar.setText("Editar");
-        btnEditar.setBorder(null);
-        btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+        panelTabela.add(jScrollPane1, "card2");
+
+        listaIDS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
+                listaIDSActionPerformed(evt);
             }
         });
+        panelTabela.add(listaIDS, "card3");
 
-        btnExcluir.setBackground(new java.awt.Color(0, 102, 255));
-        btnExcluir.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        btnExcluir.setForeground(new java.awt.Color(255, 255, 255));
-        btnExcluir.setText("Excluir");
-        btnExcluir.setBorder(null);
-        btnExcluir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
-        jLabel1.setText("Controle");
-
-        btnSair.setBackground(new java.awt.Color(0, 102, 255));
-        btnSair.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        btnSair.setForeground(new java.awt.Color(255, 255, 255));
-        btnSair.setText("Sair");
-        btnSair.setBorder(null);
-        btnSair.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnSair.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSairActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 240, Short.MAX_VALUE)
-        );
-
-        btnCadastrar.setBackground(new java.awt.Color(0, 102, 255));
-        btnCadastrar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        btnCadastrar.setForeground(new java.awt.Color(255, 255, 255));
-        btnCadastrar.setText("Cadastrar");
-        btnCadastrar.setBorder(null);
-        btnCadastrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCadastrarActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/Alien1.png"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(404, 404, 404)
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jLabel2))))
-                .addContainerGap(40, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44))
-        );
+        jPanel1.add(panelTabela);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        Formulario novaTela = new Formulario();
-        novaTela.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnCadastrarActionPerformed
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        atualizaTela();
+    }//GEN-LAST:event_formWindowOpened
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        if (tbHumanos.getSelectedRow() == -1) {
-            JOptionPane.showMessageDialog(null, "Selecione um humano para continuar", "Alteração sem seleção", WARNING_MESSAGE);
-        } else {
-            Formulario novaTela = new Formulario();
-            novaTela.setVisible(true);
-            this.dispose();
-        }
-    }//GEN-LAST:event_btnEditarActionPerformed
+    private void listaIDSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listaIDSActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listaIDSActionPerformed
 
-    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_btnSairActionPerformed
+    private void atualizaTela( ){
+        new Thread(){
+            @Override
+            public void run(){
+                try{
+                    ModeloEstatistica estatistica = new ModeloEstatistica();
+                    EstatisticaDao estatisticaDao = new EstatisticaDao();
+                    DefaultCategoryDataset graficoBarra = new DefaultCategoryDataset();
 
+                    estatisticaDao.retrieve(estatistica);
+                    System.out.println(estatistica.getCountLogInsert());
+                    System.out.println(estatistica.getCountLogUpdate());
+                    System.out.println(estatistica.getCountLogDelete());
+
+                    graficoBarra.setValue(estatistica.getCountLogInsert(), "INSERT", "INSERT");
+                    graficoBarra.setValue(estatistica.getCountLogUpdate(), "UPDATE", "UPDATE");
+                    graficoBarra.setValue(estatistica.getCountLogDelete(), "DELETE", "DELETE");
+
+                    JFreeChart barChart = ChartFactory.createBarChart("Estatísticas do log de alterações", "Quantidade",
+                            "Valores", graficoBarra,
+                            PlotOrientation.VERTICAL, true, true, false);
+                    CategoryPlot barchrt = barChart.getCategoryPlot();
+                    barchrt.setRangeGridlinePaint(new Color(140, 105, 204));
+                    ChartPanel ChartP = new ChartPanel(barChart);
+                    panelLog.removeAll();
+                    panelLog.add(ChartP, BorderLayout.CENTER);
+                    panelLog.validate();
+                }
+                catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, "Erro inesperado: "+ex, "Erro  em atualizaDash", WARNING_MESSAGE);
+                    Thread.interrupted();
+                }
+            }
+        }.start();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -260,15 +250,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCadastrar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnSair;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private java.awt.List listaIDS;
+    private javax.swing.JPanel panelChart;
+    private javax.swing.JPanel panelChartLog;
+    private javax.swing.JPanel panelHeader;
+    private javax.swing.JPanel panelLog;
+    private javax.swing.JPanel panelTabela;
     private javax.swing.JTable tbHumanos;
     // End of variables declaration//GEN-END:variables
 }
