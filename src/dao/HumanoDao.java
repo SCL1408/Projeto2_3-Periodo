@@ -14,7 +14,7 @@ public class HumanoDao {
     }
     
     public ArrayList<ModeloHumano> retrieve (){
-        String sql = "SELECT h.idHumano, h.nomeHumano, h.idSexo, h.idRotulo, "
+        String sql = "SELECT h.idHumano, h.nomeHumano, h.idSexo, h.idRotulo, h.fotoHumano, "
                    + "s.nomeSexo, "
                    + "r.nomeRotulo, "
                    + "e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.estado "
@@ -35,7 +35,8 @@ public class HumanoDao {
                     humano.setIdSexo(resultadoSentenca.getInt("h.idSexo"));
                     humano.setIdRotulo(resultadoSentenca.getInt("h.idRotulo"));
                     humano.setSexo(resultadoSentenca.getString("s.nomeSexo"));
-                    humano.setFotoHumano(resultadoSentenca.getString("r.nomeRotulo"));
+                    humano.setRotulo(resultadoSentenca.getString("r.nomeRotulo"));
+                    humano.setFotoHumano(resultadoSentenca.getString("h.fotoHumano"));
                     
                     humano.setLogradouro(resultadoSentenca.getString("e.logradouro"));
                     humano.setNumero(resultadoSentenca.getInt("e.numero"));
@@ -49,9 +50,8 @@ public class HumanoDao {
                 sentenca.close();
                 this.conexao.getConnection().close();
             }
-        }
-        catch(Exception ex){
-            
+        }catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
         return listaHumanos;
     }

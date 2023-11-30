@@ -1,16 +1,30 @@
 package Telas;
 
+import static APIs.EstadosIBGE.leEstadosIBGE;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import modelos.ModeloHumano;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class Formulario extends javax.swing.JFrame {
 
 
     public Formulario() {
         initComponents();
+    }
+    
+    public Formulario(ModeloHumano humanoSelecionado) {
+        initComponents();
+        preencherCampos(humanoSelecionado);
     }
 
     @SuppressWarnings("unchecked")
@@ -46,9 +60,10 @@ public class Formulario extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jtEnderecoFoto = new javax.swing.JTextField();
         jlFoto = new javax.swing.JLabel();
-        jtFotoBase64 = new javax.swing.JTextField();
-        btnSair = new javax.swing.JButton();
+        btnVoltar = new javax.swing.JButton();
         btnSalvar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jtFotoBase64 = new javax.swing.JLabel();
 
         searchCepBtn.setBackground(new java.awt.Color(0, 92, 184));
         searchCepBtn.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
@@ -68,20 +83,21 @@ public class Formulario extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 800));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(153, 0, 255));
         jPanel1.setMaximumSize(new java.awt.Dimension(1280, 300));
         jPanel1.setMinimumSize(new java.awt.Dimension(1280, 300));
-
-        jtNome.setBackground(new java.awt.Color(255, 255, 255));
 
         jlNome.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlNome.setText("Nome do humano");
 
         jlCEP.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlCEP.setText("CEP");
-
-        jtCEP.setBackground(new java.awt.Color(255, 255, 255));
 
         searchCepBtn1.setBackground(new java.awt.Color(153, 0, 255));
         searchCepBtn1.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
@@ -92,14 +108,9 @@ public class Formulario extends javax.swing.JFrame {
         jlLogradouro.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlLogradouro.setText("Logradouro");
 
-        jtLogradouro.setBackground(new java.awt.Color(255, 255, 255));
-
-        jtNumero.setBackground(new java.awt.Color(255, 255, 255));
-
         jlNumero.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlNumero.setText("Número");
 
-        jcbEstado.setBackground(new java.awt.Color(255, 255, 255));
         jcbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbEstado.setBorder(null);
         jcbEstado.setSelectedIndex(-1);
@@ -107,7 +118,6 @@ public class Formulario extends javax.swing.JFrame {
         jlEstado.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlEstado.setText("Estado");
 
-        jcbCidade.setBackground(new java.awt.Color(255, 255, 255));
         jcbCidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbCidade.setBorder(null);
         jcbCidade.setEnabled(false);
@@ -116,12 +126,8 @@ public class Formulario extends javax.swing.JFrame {
         jlCidade.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlCidade.setText("Cidade");
 
-        jtBairro.setBackground(new java.awt.Color(255, 255, 255));
-
         jlBairro.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlBairro.setText("Bairro");
-
-        jtComplemento.setBackground(new java.awt.Color(255, 255, 255));
 
         jlComplemento.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlComplemento.setText("Complemento");
@@ -129,12 +135,10 @@ public class Formulario extends javax.swing.JFrame {
         jlSexo.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlSexo.setText("Sexo");
 
-        jcbSexo.setBackground(new java.awt.Color(255, 255, 255));
         jcbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbSexo.setBorder(null);
         jcbEstado.setSelectedIndex(-1);
 
-        jcbRotulo.setBackground(new java.awt.Color(255, 255, 255));
         jcbRotulo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbRotulo.setBorder(null);
         jcbEstado.setSelectedIndex(-1);
@@ -152,32 +156,33 @@ public class Formulario extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(foto, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+            .addComponent(foto, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(foto, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
+            .addComponent(foto, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         alien2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/Alien2.png"))); // NOI18N
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/Alien3.gif"))); // NOI18N
 
-        jtEnderecoFoto.setBackground(new java.awt.Color(255, 255, 255));
         jtEnderecoFoto.setEnabled(false);
 
         jlFoto.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlFoto.setText("Foto");
 
-        jtFotoBase64.setBackground(new java.awt.Color(255, 255, 255));
-        jtFotoBase64.setEnabled(false);
-
-        btnSair.setBackground(new java.awt.Color(0, 102, 255));
-        btnSair.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        btnSair.setForeground(new java.awt.Color(255, 255, 255));
-        btnSair.setText("Sair");
-        btnSair.setBorder(null);
-        btnSair.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVoltar.setBackground(new java.awt.Color(0, 102, 255));
+        btnVoltar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        btnVoltar.setForeground(new java.awt.Color(255, 255, 255));
+        btnVoltar.setText("Voltar");
+        btnVoltar.setBorder(null);
+        btnVoltar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVoltar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVoltarActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setBackground(new java.awt.Color(0, 102, 255));
         btnSalvar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -185,11 +190,13 @@ public class Formulario extends javax.swing.JFrame {
         btnSalvar.setText("Salvar");
         btnSalvar.setBorder(null);
         btnSalvar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
-            }
-        });
+
+        jScrollPane1.setToolTipText("");
+        jScrollPane1.setEnabled(false);
+        jScrollPane1.setFocusable(false);
+        jScrollPane1.setOpaque(false);
+        jScrollPane1.setRequestFocusEnabled(false);
+        jScrollPane1.setViewportView(jtFotoBase64);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -198,11 +205,12 @@ public class Formulario extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jtFotoBase64)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
+                        .addGap(53, 53, 53)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,7 +241,7 @@ public class Formulario extends javax.swing.JFrame {
                                         .addGap(51, 51, 51)
                                         .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,7 +264,7 @@ public class Formulario extends javax.swing.JFrame {
                                         .addComponent(jtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addComponent(jtEnderecoFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 915, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
+                        .addGap(38, 38, 38)
                         .addComponent(alien2)
                         .addGap(42, 42, 42)
                         .addComponent(jLabel3)))
@@ -322,30 +330,38 @@ public class Formulario extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jcbRotulo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3)
-                    .addComponent(alien2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jtFotoBase64))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(alien2)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -375,13 +391,50 @@ public class Formulario extends javax.swing.JFrame {
             String NomeArquivo = file.getAbsolutePath();
             ImageIcon imagem = new ImageIcon(file.getPath());
             foto.setIcon(new ImageIcon(imagem.getImage().getScaledInstance(foto.getWidth(), foto.getHeight(), Image.SCALE_DEFAULT)));
+            jtEnderecoFoto.setText(NomeArquivo);
+
+            Path pathToImage = Paths.get(NomeArquivo);
+
+            byte[] imageBytes = null;
+            try {
+                imageBytes = Files.readAllBytes(pathToImage);
+            } catch (IOException ex) {
+                Logger.getLogger(Formulario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String base64EncodedImageBytes = Base64.getEncoder().encodeToString(imageBytes);
+            jtFotoBase64.setText(base64EncodedImageBytes);
         }
     }//GEN-LAST:event_fotoMouseClicked
 
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSalvarActionPerformed
+    private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        TelaPrincipal novaTela = new TelaPrincipal();
+        novaTela.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVoltarActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        String[][] coisa = leEstadosIBGE();
+        for(int i=0; i<coisa.length; i++) {
+            System.out.println("Nome: " + coisa[i][0]);
+            System.out.println("Sigla: " + coisa[i][1]);
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void preencherCampos(ModeloHumano humanoSelecionado){
+        jtNome.setText(humanoSelecionado.getNomeHumano());
+        jtLogradouro.setText(humanoSelecionado.getLogradouro());
+//        jtNumero.setText(humanoSelecionado.getNumero());
+        if(humanoSelecionado.getComplemento()==null)
+            jtComplemento.setText(null);
+        else
+            jtComplemento.setText(humanoSelecionado.getComplemento());
+        jtBairro.setText(humanoSelecionado.getBairro());
+        jcbCidade.setSelectedItem(humanoSelecionado.getCidade());
+        jcbEstado.setSelectedItem(humanoSelecionado.getEstado());
+        jcbSexo.setSelectedItem(humanoSelecionado.getSexo());
+        jcbRotulo.setSelectedItem(humanoSelecionado.getRotulo());
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -420,12 +473,13 @@ public class Formulario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel alien2;
-    private javax.swing.JButton btnSair;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnVoltar;
     private javax.swing.JLabel foto;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> jcbCidade;
     private javax.swing.JComboBox<String> jcbEstado;
     private javax.swing.JComboBox<String> jcbRotulo;
@@ -445,7 +499,7 @@ public class Formulario extends javax.swing.JFrame {
     private javax.swing.JTextField jtCEP;
     private javax.swing.JTextField jtComplemento;
     private javax.swing.JTextField jtEnderecoFoto;
-    private javax.swing.JTextField jtFotoBase64;
+    private javax.swing.JLabel jtFotoBase64;
     private javax.swing.JTextField jtLogradouro;
     private javax.swing.JTextField jtNome;
     private javax.swing.JFormattedTextField jtNumero;
