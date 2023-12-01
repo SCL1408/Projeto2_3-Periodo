@@ -1,6 +1,9 @@
 package Telas;
 
+import APIs.CIdadesIBGE;
 import static APIs.EstadosIBGE.leEstadosIBGE;
+import static APIs.CIdadesIBGE.leCidadesIBGE;
+import dao.HumanoDao;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
@@ -14,6 +17,8 @@ import javax.swing.JFileChooser;
 import modelos.ModeloHumano;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
 public class Formulario extends javax.swing.JFrame {
 
@@ -64,6 +69,7 @@ public class Formulario extends javax.swing.JFrame {
         btnSalvar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtFotoBase64 = new javax.swing.JLabel();
+        listaSiglas = new java.awt.List();
 
         searchCepBtn.setBackground(new java.awt.Color(0, 92, 184));
         searchCepBtn.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
@@ -111,14 +117,21 @@ public class Formulario extends javax.swing.JFrame {
         jlNumero.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlNumero.setText("Número");
 
-        jcbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbEstado.setBorder(null);
         jcbEstado.setSelectedIndex(-1);
+        jcbEstado.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                jcbEstadoPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
 
         jlEstado.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlEstado.setText("Estado");
 
-        jcbCidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbCidade.setBorder(null);
         jcbCidade.setEnabled(false);
         jcbCidade.setSelectedIndex(-1);
@@ -135,13 +148,30 @@ public class Formulario extends javax.swing.JFrame {
         jlSexo.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlSexo.setText("Sexo");
 
-        jcbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
         jcbSexo.setBorder(null);
         jcbEstado.setSelectedIndex(-1);
+        jcbSexo.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                jcbSexoPopupMenuWillBecomeVisible(evt);
+            }
+        });
 
-        jcbRotulo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbRotulo.setBorder(null);
         jcbEstado.setSelectedIndex(-1);
+        jcbRotulo.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                jcbRotuloPopupMenuWillBecomeVisible(evt);
+            }
+        });
 
         jlRotulo.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         jlRotulo.setText("Rótulo");
@@ -197,6 +227,8 @@ public class Formulario extends javax.swing.JFrame {
         jScrollPane1.setOpaque(false);
         jScrollPane1.setRequestFocusEnabled(false);
         jScrollPane1.setViewportView(jtFotoBase64);
+
+        listaSiglas.setVisible(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -266,7 +298,9 @@ public class Formulario extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addComponent(alien2)
-                        .addGap(42, 42, 42)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(listaSiglas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)
                         .addComponent(jLabel3)))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
@@ -340,7 +374,8 @@ public class Formulario extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(alien2)))
+                            .addComponent(alien2)
+                            .addComponent(listaSiglas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -413,17 +448,31 @@ public class Formulario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        String[][] coisa = leEstadosIBGE();
-        for(int i=0; i<coisa.length; i++) {
-            System.out.println("Nome: " + coisa[i][0]);
-            System.out.println("Sigla: " + coisa[i][1]);
-        }
+        atualizarEstados();
     }//GEN-LAST:event_formWindowOpened
+
+    private void jcbSexoPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_jcbSexoPopupMenuWillBecomeVisible
+        atualizarSexo();
+    }//GEN-LAST:event_jcbSexoPopupMenuWillBecomeVisible
+
+    private void jcbEstadoPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_jcbEstadoPopupMenuWillBecomeInvisible
+        if (jcbEstado.getSelectedIndex() != -1) {
+            atualizarCidades();
+            jcbCidade.setEnabled(true);
+        }
+        else{
+            jcbCidade.setEnabled(false);
+        }
+    }//GEN-LAST:event_jcbEstadoPopupMenuWillBecomeInvisible
+
+    private void jcbRotuloPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_jcbRotuloPopupMenuWillBecomeVisible
+        atualizarRotulos();
+    }//GEN-LAST:event_jcbRotuloPopupMenuWillBecomeVisible
 
     private void preencherCampos(ModeloHumano humanoSelecionado){
         jtNome.setText(humanoSelecionado.getNomeHumano());
         jtLogradouro.setText(humanoSelecionado.getLogradouro());
-//        jtNumero.setText(humanoSelecionado.getNumero());
+        jtNumero.setText(String.valueOf(humanoSelecionado.getNumero()));
         if(humanoSelecionado.getComplemento()==null)
             jtComplemento.setText(null);
         else
@@ -433,6 +482,88 @@ public class Formulario extends javax.swing.JFrame {
         jcbEstado.setSelectedItem(humanoSelecionado.getEstado());
         jcbSexo.setSelectedItem(humanoSelecionado.getSexo());
         jcbRotulo.setSelectedItem(humanoSelecionado.getRotulo());
+        jtCEP.setText(humanoSelecionado.getCep());
+    }
+    
+    private void atualizarEstados(){
+        new Thread(){
+            @Override
+            public void run(){
+                try{
+                    String[][] listaEstados=leEstadosIBGE();
+                    jcbEstado.removeAllItems();
+                    for(String[] estado : listaEstados){
+                        jcbEstado.addItem(estado[0]);
+                        listaSiglas.add(estado[1]);
+                    }
+                    jcbEstado.setSelectedIndex(-1);
+                }
+                catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO 1!", ERROR_MESSAGE);
+                    Thread.interrupted();
+                }
+            }
+        }.start();
+    }
+    
+    private void atualizarCidades(){
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    jcbCidade.removeAllItems();
+                    String[] listaCidade = leCidadesIBGE(listaSiglas.getItem(jcbEstado.getSelectedIndex()));
+                    for (String cidade : listaCidade) {
+                        jcbCidade.addItem(cidade);
+                    }
+                    jcbCidade.setSelectedIndex(-1);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO 2!", ERROR_MESSAGE);
+                    Thread.interrupted();
+                }
+
+            }
+        }.start();
+    }
+    
+    private void atualizarSexo(){
+        new Thread(){
+            @Override
+            public void run(){
+                try{
+                    jcbSexo.removeAllItems();
+                    HumanoDao dao = new HumanoDao();
+                    String[] sexos = dao.retrieveSexo();
+                    for(String sexo : sexos)
+                        jcbSexo.addItem(sexo);
+                    jcbSexo.setSelectedIndex(-1);
+                }
+                catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO 3!", ERROR_MESSAGE);
+                    Thread.interrupted();
+                }
+            }
+        }.start();
+    }
+    
+    private void atualizarRotulos(){
+        new Thread(){
+            @Override
+            public void run(){
+                try{
+                    jcbRotulo.removeAllItems();
+                    HumanoDao dao = new HumanoDao();
+                    String[] rotulos = dao.retrieveRotulo();
+                    for(String rotulo : rotulos)
+                        jcbRotulo.addItem(rotulo);
+                    jcbRotulo.setSelectedIndex(-1);
+                }
+                catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, "Ocorreu um erro inesperado:\n" + ex.getMessage(), "ERRO 3!", ERROR_MESSAGE);
+                    Thread.interrupted();
+                }
+            }
+        }.start();
     }
     
     /**
@@ -503,6 +634,7 @@ public class Formulario extends javax.swing.JFrame {
     private javax.swing.JTextField jtLogradouro;
     private javax.swing.JTextField jtNome;
     private javax.swing.JFormattedTextField jtNumero;
+    private java.awt.List listaSiglas;
     private javax.swing.JLabel searchCepBtn;
     private javax.swing.JLabel searchCepBtn1;
     // End of variables declaration//GEN-END:variables

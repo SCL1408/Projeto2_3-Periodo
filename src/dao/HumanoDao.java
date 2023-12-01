@@ -17,7 +17,7 @@ public class HumanoDao {
         String sql = "SELECT h.idHumano, h.nomeHumano, h.idSexo, h.idRotulo, h.fotoHumano, "
                    + "s.nomeSexo, "
                    + "r.nomeRotulo, "
-                   + "e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.estado "
+                   + "e.logradouro, e.numero, e.complemento, e.bairro, e.cidade, e.estado, e.cep "
                    + "FROM humanos AS h "
                    + "INNER JOIN sexos AS s ON h.idSexo=s.idSexo "
                    + "INNER JOIN rotulos AS r ON h.idRotulo = r.idRotulo "
@@ -44,6 +44,7 @@ public class HumanoDao {
                     humano.setBairro(resultadoSentenca.getString("e.bairro"));
                     humano.setCidade(resultadoSentenca.getString("e.cidade"));
                     humano.setEstado(resultadoSentenca.getString("e.estado"));
+                    humano.setCep(resultadoSentenca.getString("e.cep"));
 
                     listaHumanos.add(humano);
                 }
@@ -54,5 +55,51 @@ public class HumanoDao {
             throw new RuntimeException(ex);
         }
         return listaHumanos;
+    }
+    
+    public String[] retrieveSexo(){
+        String sql = "SELECT nomeSexo FROM sexos ORDER BY nomeSexo";
+        ArrayList<String> listaSexos = new ArrayList<String>();
+        String[] retorno = null;
+        
+        try{
+            if(this.conexao.conectar()){
+                PreparedStatement sentenca = this.conexao.getConnection().prepareStatement(sql);
+                ResultSet resultadoSentenca = sentenca.executeQuery();
+                while(resultadoSentenca.next()){
+                    listaSexos.add(resultadoSentenca.getString("nomeSexo"));
+                }
+                retorno = new String[listaSexos.size()];
+                int i=0;
+                for(String sexo : listaSexos)
+                    retorno[i++] = sexo;
+            }
+        }catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return retorno;
+    }
+    
+    public String[] retrieveRotulo(){
+        String sql = "SELECT nomeRotulo FROM rotulos ORDER BY nomeRotulo";
+        ArrayList<String> listaRotulos = new ArrayList<String>();
+        String[] retorno = null;
+        
+        try{
+            if(this.conexao.conectar()){
+                PreparedStatement sentenca = this.conexao.getConnection().prepareStatement(sql);
+                ResultSet resultadoSentenca = sentenca.executeQuery();
+                while(resultadoSentenca.next()){
+                    listaRotulos.add(resultadoSentenca.getString("nomeRotulo"));
+                }
+                retorno = new String[listaRotulos.size()];
+                int i=0;
+                for(String rotulo : listaRotulos)
+                    retorno[i++] = rotulo;
+            }
+        }catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return retorno;
     }
 }

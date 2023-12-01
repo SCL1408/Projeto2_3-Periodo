@@ -18,11 +18,12 @@ public class ModeloHumano {
     String cidade;
     String estado;
     String sigla;
+    String cep;
 
     public ModeloHumano() {
     }
 
-    public ModeloHumano(int idHumano, String nomeHumano, int idSexo, int idRotulo, String sexo, String rotulo, String fotoHumano, String logradouro, int numero, String complemento, String bairro, String cidade, String estado) {
+    public ModeloHumano(int idHumano, String nomeHumano, int idSexo, int idRotulo, String sexo, String rotulo, String fotoHumano, String logradouro, int numero, String complemento, String bairro, String cidade, String estado, String cep) {
         this.idHumano = idHumano;
         this.nomeHumano = nomeHumano;
         this.idSexo = idSexo;
@@ -35,6 +36,7 @@ public class ModeloHumano {
         this.complemento = complemento;
         this.bairro = bairro;
         this.cidade = cidade;
+        this.cep = cep;
         switch (sigla.toUpperCase()) {
             case "AC":
                 this.estado = "Acre";
@@ -306,5 +308,11 @@ public class ModeloHumano {
     }
     public void setSigla(String sigla){
         this.sigla = sigla;
+    }
+    public String getCep(){
+        return this.cep;
+    }
+    public void setCep(String cep){
+        this.cep = cep;
     }
 }

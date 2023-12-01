@@ -137,11 +137,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "Sexo", "Rotulo", "Logradouro", "Numero", "Complemento", "Bairro", "Cidade", "Estado"
+                "Nome", "Sexo", "Rotulo", "Logradouro", "Numero", "Complemento", "Bairro", "Cidade", "Estado", "CEP"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -164,6 +164,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             tbHumanos.getColumnModel().getColumn(6).setResizable(false);
             tbHumanos.getColumnModel().getColumn(7).setResizable(false);
             tbHumanos.getColumnModel().getColumn(8).setResizable(false);
+            tbHumanos.getColumnModel().getColumn(9).setResizable(false);
         }
 
         panelTabela.add(jScrollPane1, "card2");
@@ -259,6 +260,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             humanoSelecionado.setBairro(tbHumanos.getValueAt(tbHumanos.getSelectedRow(), 6).toString());
             humanoSelecionado.setCidade(tbHumanos.getValueAt(tbHumanos.getSelectedRow(), 7).toString());
             humanoSelecionado.setEstado(tbHumanos.getValueAt(tbHumanos.getSelectedRow(), 8).toString());
+            humanoSelecionado.setCep(tbHumanos.getValueAt(tbHumanos.getSelectedRow(), 9).toString());
         }
     }//GEN-LAST:event_tbHumanosMouseClicked
 
@@ -342,7 +344,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
                             humano.getComplemento(),
                             humano.getBairro(),
                             humano.getCidade(),
-                            humano.getEstado()
+                            humano.getEstado(),
+                            humano.getCep()
                         });
                         listaIDS.add(Integer.toString(humano.getIdHumano()));
                         listaFotos.add(humano.getFotoHumano());
