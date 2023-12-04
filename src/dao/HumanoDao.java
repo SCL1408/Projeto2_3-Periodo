@@ -102,4 +102,29 @@ public class HumanoDao {
         }
         return retorno;
     }
+    
+    public void deleteHumano(int id){
+        String sql1 = "DELETE FROM enderecos WHERE idEndereco = ?";
+        String sql2 = "DELETE FROM humanos WHERE idHumano = ?";
+        
+        try{
+            if(this.conexao.conectar()){
+                PreparedStatement sentenca1 = this.conexao.getConnection().prepareStatement(sql1);
+                PreparedStatement sentenca2 = this.conexao.getConnection().prepareStatement(sql2);
+                sentenca1.setInt(1, id);
+                sentenca2.setInt(1, id);
+                
+                sentenca1.execute();
+                sentenca1.close();
+                
+                sentenca2.execute();
+                sentenca2.close();
+                
+                this.conexao.getConnection().close();
+            }
+        }catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+    }
 }

@@ -170,6 +170,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setText("Sair");
         btnSair.addActionListener(new java.awt.event.ActionListener() {
@@ -264,6 +269,24 @@ public class TelaPrincipal extends javax.swing.JFrame {
             novaTela.setVisible(true);
             this.dispose();
     }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if(tbHumanos.getSelectedRow()==-1){
+            JOptionPane.showMessageDialog(null, "Selecione um Cadastro para remoção!", "ATENÇÃO!", WARNING_MESSAGE);
+        }else{
+            
+            //pergunda de confirmação antes de excluir o registro
+            int opcao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja remover?");
+            //se for igual a 0 siginifica que clicou em SIM
+            if (opcao == 0) {
+                HumanoDao humanoDao = new HumanoDao();
+                //chama o metodo excuir passando o id da marca selecionada
+                humanoDao.deleteHumano(Integer.parseInt(listaIDS.getItem(tbHumanos.getSelectedRow())));
+                renderizarTabela();
+            }
+            
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void atualizarTela( ){
         new Thread(){
