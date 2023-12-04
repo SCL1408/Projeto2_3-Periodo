@@ -5,15 +5,19 @@ public class ModeloEstatistica {
     int countLogInsert;
     int countLogUpdate;
     int countLogDelete;
+    int countAlunos;
+    int countProfessores;
 
     public ModeloEstatistica() {
 
     }
 
-    public ModeloEstatistica(int countLogInsert, int countLogUpdate, int countLogDelete) {
+    public ModeloEstatistica(int countLogInsert, int countLogUpdate, int countLogDelete, int countAlunos, int countProfessores) {
         this.countLogInsert = countLogInsert;
         this.countLogUpdate = countLogUpdate;
         this.countLogDelete = countLogDelete;
+        this.countAlunos = countAlunos;
+        this.countProfessores = countProfessores;
     }
 
     public int getCountLogInsert() {
@@ -35,5 +39,19 @@ public class ModeloEstatistica {
     }
     public void setCountLogDelete(int countLogDelete) {
         this.countLogDelete = countLogDelete;
+    }
+
+    public int getCountAlunos() {
+        return this.countAlunos;
+    }
+    public void setCountAlunos(int countAlunos) {
+        this.countAlunos = countAlunos;
+    }
+
+    public int getCountProfessores() {
+        return this.countProfessores;
+    }
+    public void setCountProfessores(int countProfessores) {
+        this.countProfessores = countProfessores;
     }
 }

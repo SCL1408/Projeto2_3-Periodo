@@ -273,11 +273,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     ModeloEstatistica estatistica = new ModeloEstatistica();
                     EstatisticaDao estatisticaDao = new EstatisticaDao();
                     DefaultCategoryDataset graficoBarra = new DefaultCategoryDataset();
-
+                    DefaultPieDataset graficoPizza = new DefaultPieDataset();
+                    
                     estatisticaDao.retrieve(estatistica);
-                    System.out.println(estatistica.getCountLogInsert());
-                    System.out.println(estatistica.getCountLogUpdate());
-                    System.out.println(estatistica.getCountLogDelete());
+                    
+                    //--------------------------------------------------------------- GRÁFICO DE BARRA
 
                     graficoBarra.setValue(estatistica.getCountLogInsert(), "INSERT", "INSERT");
                     graficoBarra.setValue(estatistica.getCountLogUpdate(), "UPDATE", "UPDATE");
@@ -292,6 +292,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     panelLog.removeAll();
                     panelLog.add(ChartP, BorderLayout.CENTER);
                     panelLog.validate();
+                    
+                    //--------------------------------------------------------------- GRÁFICO DE PIZZA
+                    
+                    graficoPizza.setValue("Alunos", estatistica.getCountAlunos());
+                    graficoPizza.setValue("Professores", estatistica.getCountProfessores());
+                    
+                    JFreeChart pizzaChart = ChartFactory.createPieChart("Rotulagem", graficoPizza);// Cria um gráfico de pizza com os dados fornecidos.
+                    PiePlot pizzachrt = (PiePlot) pizzaChart.getPlot();// Obtém a plotagem (configuração) do gráfico de pizza.
+                    ChartPanel ChartPizza = new ChartPanel(pizzaChart);// Cria um painel de gráfico e adiciona o gráfico de pizza a ele.
+                    // Remove qualquer conteúdo anterior do painel e adiciona o novo gráfico.
+                    panelChart.removeAll();
+                    panelChart.add(ChartPizza, BorderLayout.CENTER);
+                    panelChart.validate();// Solicita que o painel de pizza seja validado para atualização na interface do usuário.
+
                 }
                 catch(Exception ex){
                     JOptionPane.showMessageDialog(null, "Erro inesperado: "+ex, "Erro  em atualizaDash", WARNING_MESSAGE);

@@ -18,7 +18,9 @@ public class EstatisticaDao {
             String sql = "SELECT "
                        + "(SELECT count(idLog) FROM log WHERE comando='INSERT') AS inserts, "
                        + "(SELECT count(idLog) FROM log WHERE comando='UPDATE') AS updates, "
-                       + "(SELECT count(idLog) FROM log WHERE comando='DELETE') AS deletes;";
+                       + "(SELECT count(idLog) FROM log WHERE comando='DELETE') AS deletes, "
+                       + "(SELECT count(idHumano) FROM humanos WHERE idRotulo=1) AS alunos, "
+                       + "(SELECT count(idHumano) FROM humanos WHERE idRotulo=2) AS professores;";
         try{
             if(this.conexao.conectar()){
                 PreparedStatement sentenca = this.conexao.getConnection().prepareStatement(sql);
@@ -27,6 +29,8 @@ public class EstatisticaDao {
                     estatistica.setCountLogInsert(resultadoSentenca.getInt("inserts"));
                     estatistica.setCountLogDelete(resultadoSentenca.getInt("deletes"));
                     estatistica.setCountLogUpdate(resultadoSentenca.getInt("updates"));
+                    estatistica.setCountAlunos(resultadoSentenca.getInt("alunos"));
+                    estatistica.setCountProfessores(resultadoSentenca.getInt("professores"));
                 }
             }
         }catch(SQLException ex){
