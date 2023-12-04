@@ -292,47 +292,47 @@ public class TelaPrincipal extends javax.swing.JFrame {
         new Thread(){
             @Override
             public void run(){
-                try{
-                    ModeloEstatistica estatistica = new ModeloEstatistica();
-                    EstatisticaDao estatisticaDao = new EstatisticaDao();
-                    DefaultCategoryDataset graficoBarra = new DefaultCategoryDataset();
-                    DefaultPieDataset graficoPizza = new DefaultPieDataset();
-                    
-                    estatisticaDao.retrieve(estatistica);
-                    
-                    //--------------------------------------------------------------- GRÁFICO DE BARRA
+                while (true) {
+                    try {
+                        ModeloEstatistica estatistica = new ModeloEstatistica();
+                        EstatisticaDao estatisticaDao = new EstatisticaDao();
+                        DefaultCategoryDataset graficoBarra = new DefaultCategoryDataset();
+                        DefaultPieDataset graficoPizza = new DefaultPieDataset();
+                        
+                        estatisticaDao.retrieve(estatistica);
 
-                    graficoBarra.setValue(estatistica.getCountLogInsert(), "INSERT", "INSERT");
-                    graficoBarra.setValue(estatistica.getCountLogUpdate(), "UPDATE", "UPDATE");
-                    graficoBarra.setValue(estatistica.getCountLogDelete(), "DELETE", "DELETE");
+                        //--------------------------------------------------------------- GRÁFICO DE BARRA
+                        graficoBarra.setValue(estatistica.getCountLogInsert(), "INSERT", "INSERT");
+                        graficoBarra.setValue(estatistica.getCountLogUpdate(), "UPDATE", "UPDATE");
+                        graficoBarra.setValue(estatistica.getCountLogDelete(), "DELETE", "DELETE");
+                        
+                        JFreeChart barChart = ChartFactory.createBarChart("Estatísticas do log de alterações", "Quantidade",
+                                "Valores", graficoBarra,
+                                PlotOrientation.VERTICAL, true, true, false);
+                        CategoryPlot barchrt = barChart.getCategoryPlot();
+                        barchrt.setRangeGridlinePaint(new Color(140, 105, 204));
+                        ChartPanel ChartP = new ChartPanel(barChart);
+                        panelLog.removeAll();
+                        panelLog.add(ChartP, BorderLayout.CENTER);
+                        panelLog.validate();
 
-                    JFreeChart barChart = ChartFactory.createBarChart("Estatísticas do log de alterações", "Quantidade",
-                            "Valores", graficoBarra,
-                            PlotOrientation.VERTICAL, true, true, false);
-                    CategoryPlot barchrt = barChart.getCategoryPlot();
-                    barchrt.setRangeGridlinePaint(new Color(140, 105, 204));
-                    ChartPanel ChartP = new ChartPanel(barChart);
-                    panelLog.removeAll();
-                    panelLog.add(ChartP, BorderLayout.CENTER);
-                    panelLog.validate();
-                    
-                    //--------------------------------------------------------------- GRÁFICO DE PIZZA
-                    
-                    graficoPizza.setValue("Alunos", estatistica.getCountAlunos());
-                    graficoPizza.setValue("Professores", estatistica.getCountProfessores());
-                    
-                    JFreeChart pizzaChart = ChartFactory.createPieChart("Rotulagem", graficoPizza);// Cria um gráfico de pizza com os dados fornecidos.
-                    PiePlot pizzachrt = (PiePlot) pizzaChart.getPlot();// Obtém a plotagem (configuração) do gráfico de pizza.
-                    ChartPanel ChartPizza = new ChartPanel(pizzaChart);// Cria um painel de gráfico e adiciona o gráfico de pizza a ele.
-                    // Remove qualquer conteúdo anterior do painel e adiciona o novo gráfico.
-                    panelChart.removeAll();
-                    panelChart.add(ChartPizza, BorderLayout.CENTER);
-                    panelChart.validate();// Solicita que o painel de pizza seja validado para atualização na interface do usuário.
+                        //--------------------------------------------------------------- GRÁFICO DE PIZZA
+                        graficoPizza.setValue("Alunos", estatistica.getCountAlunos());
+                        graficoPizza.setValue("Professores", estatistica.getCountProfessores());
+                        
+                        JFreeChart pizzaChart = ChartFactory.createPieChart("Rotulagem", graficoPizza);// Cria um gráfico de pizza com os dados fornecidos.
+                        PiePlot pizzachrt = (PiePlot) pizzaChart.getPlot();// Obtém a plotagem (configuração) do gráfico de pizza.
+                        ChartPanel ChartPizza = new ChartPanel(pizzaChart);// Cria um painel de gráfico e adiciona o gráfico de pizza a ele.
+                        // Remove qualquer conteúdo anterior do painel e adiciona o novo gráfico.
+                        panelChart.removeAll();
+                        panelChart.add(ChartPizza, BorderLayout.CENTER);
+                        panelChart.validate();// Solicita que o painel de pizza seja validado para atualização na interface do usuário.
 
-                }
-                catch(Exception ex){
-                    JOptionPane.showMessageDialog(null, "Erro inesperado: "+ex, "Erro  em atualizaDash", WARNING_MESSAGE);
-                    Thread.interrupted();
+                        Thread.sleep(1500);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Erro inesperado: " + ex, "Erro  em atualizaDash", WARNING_MESSAGE);
+                        Thread.interrupted();
+                    }
                 }
             }
         }.start();
