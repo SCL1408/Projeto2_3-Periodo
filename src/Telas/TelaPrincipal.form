@@ -7,36 +7,14 @@
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="panelChart.setPreferredSize(new Dimension(300, 250));&#xa;panelChart.setBackground(Color.RED); // Apenas para identifica&#xe7;&#xe3;o visual"/>
       </AuxValues>
 
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="panelLog">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="panelLog.setPreferredSize(new Dimension(300, 250));&#xa;//panelLog.setBackground(Color.BLUE); // Apenas para identifica&#xe7;&#xe3;o visual&#xa;panelLog.setLayout(new java.awt.BorderLayout());"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="panelLog.setPreferredSize(new Dimension(300, 250));&#xa;panelLog.setBackground(Color.BLUE); // Apenas para identifica&#xe7;&#xe3;o visual&#xa;panelLog.setLayout(new java.awt.BorderLayout());"/>
       </AuxValues>
 
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-          </Group>
-        </DimensionLayout>
-      </Layout>
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
     </Container>
   </NonVisualComponents>
   <Properties>

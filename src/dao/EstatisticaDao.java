@@ -15,16 +15,18 @@ public class EstatisticaDao {
     }
     
     public void retrieve (ModeloEstatistica estatistica){
-        String sql = "SELECT "
-                   + "(SELECT count(idLog) FROM log WHERE comando='INSERT'), "
-                   + "(SELECT count(idLog) FROM log WHERE comando='UPDATE'), "
-                   + "(SELECT count(idLog) FROM log WHERE comando='DELETE');";
+            String sql = "SELECT "
+                       + "(SELECT count(idLog) FROM log WHERE comando='INSERT') AS inserts, "
+                       + "(SELECT count(idLog) FROM log WHERE comando='UPDATE') AS updates, "
+                       + "(SELECT count(idLog) FROM log WHERE comando='DELETE') AS deletes;";
         try{
             if(this.conexao.conectar()){
                 PreparedStatement sentenca = this.conexao.getConnection().prepareStatement(sql);
                 ResultSet resultadoSentenca = sentenca.executeQuery();
                 while(resultadoSentenca.next()){
-                    
+                    estatistica.setCountLogInsert(resultadoSentenca.getInt("inserts"));
+                    estatistica.setCountLogDelete(resultadoSentenca.getInt("deletes"));
+                    estatistica.setCountLogUpdate(resultadoSentenca.getInt("updates"));
                 }
             }
         }catch(SQLException ex){

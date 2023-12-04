@@ -60,32 +60,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         panelChart.setPreferredSize(new Dimension(300, 250));
         panelChart.setBackground(Color.RED); // Apenas para identificação visual
-
-        javax.swing.GroupLayout panelChartLayout = new javax.swing.GroupLayout(panelChart);
-        panelChart.setLayout(panelChartLayout);
-        panelChartLayout.setHorizontalGroup(
-            panelChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        panelChartLayout.setVerticalGroup(
-            panelChartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        panelChart.setLayout(new java.awt.BorderLayout());
 
         panelLog.setPreferredSize(new Dimension(300, 250));
-        //panelLog.setBackground(Color.BLUE); // Apenas para identificação visual
+        panelLog.setBackground(Color.BLUE); // Apenas para identificação visual
         panelLog.setLayout(new java.awt.BorderLayout());
-
-        javax.swing.GroupLayout panelLogLayout = new javax.swing.GroupLayout(panelLog);
-        panelLog.setLayout(panelLogLayout);
-        panelLogLayout.setHorizontalGroup(
-            panelLogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        panelLogLayout.setVerticalGroup(
-            panelLogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        panelLog.setLayout(new java.awt.BorderLayout());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 0, 255));
@@ -295,9 +275,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     DefaultCategoryDataset graficoBarra = new DefaultCategoryDataset();
 
                     estatisticaDao.retrieve(estatistica);
-//                    System.out.println(estatistica.getCountLogInsert());
-//                    System.out.println(estatistica.getCountLogUpdate());
-//                    System.out.println(estatistica.getCountLogDelete());
+                    System.out.println(estatistica.getCountLogInsert());
+                    System.out.println(estatistica.getCountLogUpdate());
+                    System.out.println(estatistica.getCountLogDelete());
 
                     graficoBarra.setValue(estatistica.getCountLogInsert(), "INSERT", "INSERT");
                     graficoBarra.setValue(estatistica.getCountLogUpdate(), "UPDATE", "UPDATE");
