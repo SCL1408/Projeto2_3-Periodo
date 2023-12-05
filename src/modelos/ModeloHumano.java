@@ -23,6 +23,96 @@ public class ModeloHumano {
     public ModeloHumano() {
     }
 
+    public ModeloHumano(String sigla){
+        this.sigla = sigla;
+        switch (sigla.toUpperCase()) {
+            case "AC":
+                this.estado = "Acre";
+                break;
+            case "AL":
+                this.estado = "Alagoas";
+                break;
+            case "AP":
+                this.estado = "Amapá";
+                break;
+            case "AM":
+                this.estado = "Amazonas";
+                break;
+            case "BA":
+                this.estado = "Bahia";
+                break;
+            case "CE":
+                this.estado = "Ceará";
+                break;
+            case "DF":
+                this.estado = "Distrito Federal";
+                break;
+            case "ES":
+                this.estado = "Espírito Santo";
+                break;
+            case "GO":
+                this.estado = "Goiás";
+                break;
+            case "MA":
+                this.estado = "Maranhão";
+                break;
+            case "MT":
+                this.estado = "Mato Grosso";
+                break;
+            case "MS":
+                this.estado = "Mato Grosso do Sul";
+                break;
+            case "MG":
+                this.estado = "Minas Gerais";
+                break;
+            case "PA":
+                this.estado = "Pará";
+                break;
+            case "PB":
+                this.estado = "Paraíba";
+                break;
+            case "PR":
+                this.estado = "Paraná";
+                break;
+            case "PE":
+                this.estado = "Pernambuco";
+                break;
+            case "PI":
+                this.estado = "Piauí";
+                break;
+            case "RJ":
+                this.estado = "Rio de Janeiro";
+                break;
+            case "RN":
+                this.estado = "Rio Grande do Norte";
+                break;
+            case "RS":
+                this.estado = "Rio Grande do Sul";
+                break;
+            case "RO":
+                this.estado = "Rondônia";
+                break;
+            case "RR":
+                this.estado = "Roraima";
+                break;
+            case "SC":
+                this.estado = "Santa Catarina";
+                break;
+            case "SP":
+                this.estado = "São Paulo";
+                break;
+            case "SE":
+                this.estado = "Sergipe";
+                break;
+            case "TO":
+                this.estado = "Tocantins";
+                break;
+            default:
+                this.estado = estado;
+                break;
+        }
+    }
+    
     public ModeloHumano(int idHumano, String nomeHumano, int idSexo, int idRotulo, String sexo, String rotulo, String fotoHumano, String logradouro, int numero, String complemento, String bairro, String cidade, String estado, String cep) {
         this.idHumano = idHumano;
         this.nomeHumano = nomeHumano;

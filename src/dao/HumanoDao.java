@@ -21,7 +21,7 @@ public class HumanoDao {
                    + "FROM humanos AS h "
                    + "INNER JOIN sexos AS s ON h.idSexo=s.idSexo "
                    + "INNER JOIN rotulos AS r ON h.idRotulo = r.idRotulo "
-                   + "INNER JOIN enderecos AS e ON h.idHumano = e.idEndereco;";
+                   + "INNER JOIN enderecos AS e ON h.idHumano = e.idEndereco ORDER BY h.nomeHumano;";
         ArrayList<ModeloHumano> listaHumanos = new ArrayList<ModeloHumano>();
         
         try{
@@ -125,6 +125,43 @@ public class HumanoDao {
         }catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
+    }
+    
+    public void insertHumano(ModeloHumano humano){
+        String sqlHumano = "INSERT INTO humanos (nomeHumano, idSexo, idRotulo, fotoHumano) VALUES ("
+                         + "?, "
+                         + "(SELECT idSexo FROM sexos WHERE nomeSexo=?), "
+                         + "(SELECT idRotulo FROM rotulos WHERE nomeRotulo=?), "
+                         + "?);";
+        String sqlEndereco = "INSERT INTO enderecos (logradouro, numero, complemento, bairro, cidade, estado, cep) "
+                           + "VALUES(?, ?, ?, ?, ?, ?, ?)";
         
+        try{
+            if(this.conexao.conectar()){
+                PreparedStatement sentenca = this.conexao.getConnection().prepareStatement(sqlHumano);
+                sentenca.setString(1, humano.getNomeHumano());
+                sentenca.setString(2, humano.getSexo());
+                sentenca.setString(2, humano.getRotulo());
+                sentenca.setString(4, humano.getFotoHumano());
+                
+                sentenca.execute();
+                sentenca.close();
+                
+                sentenca = this.conexao.getConnection().prepareStatement(sqlEndereco);
+                sentenca.setString(1, humano.getLogradouro());
+                sentenca.setInt(2, humano.getNumero());
+                sentenca.setString(3, humano.getComplemento());
+                sentenca.setString(4, humano.getBairro());
+                sentenca.setString(5, humano.getCidade());
+                sentenca.setString(6, humano.getEstado());
+                sentenca.setString(7, humano.getCep());
+                
+                sentenca.execute();
+                sentenca.close();
+                this.conexao.getConnection().close();
+            }
+        }catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
