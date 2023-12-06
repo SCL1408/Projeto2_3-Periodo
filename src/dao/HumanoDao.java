@@ -141,7 +141,7 @@ public class HumanoDao {
                 PreparedStatement sentenca = this.conexao.getConnection().prepareStatement(sqlHumano);
                 sentenca.setString(1, humano.getNomeHumano());
                 sentenca.setString(2, humano.getSexo());
-                sentenca.setString(2, humano.getRotulo());
+                sentenca.setString(3, humano.getRotulo());
                 sentenca.setString(4, humano.getFotoHumano());
                 
                 sentenca.execute();
@@ -155,6 +155,54 @@ public class HumanoDao {
                 sentenca.setString(5, humano.getCidade());
                 sentenca.setString(6, humano.getEstado());
                 sentenca.setString(7, humano.getCep());
+                
+                sentenca.execute();
+                sentenca.close();
+                this.conexao.getConnection().close();
+            }
+        }catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void updateHumano(ModeloHumano humano) {
+        String sqlHumano = "UPDATE humanos SET "
+                         + "nomeHumano = ?, "
+                         + "idSexo = (SELECT idSexo FROM sexos WHERE nomeSexo=?), "
+                         + "idRotulo = (SELECT idRotulo FROM rotulos WHERE nomeRotulo=?), "
+                         + "fotoHumano = ? "
+                         + "WHERE idHumano = ?;";
+        String sqlEndereco = "UPDATE enderecos SET "
+                          + "logradouro = ?, "
+                          + "numero = ?, "
+                          + "complemento = ?, "
+                          + "bairro = ?, "
+                          + "cidade = ?, "
+                          + "estado = ?, "
+                          + "cep = ? "
+                          + "WHERE idEndereco = ?;";
+        
+        try{
+            if(this.conexao.conectar()){
+                PreparedStatement sentenca = this.conexao.getConnection().prepareStatement(sqlHumano);
+                sentenca.setString(1, humano.getNomeHumano());
+                sentenca.setString(2, humano.getSexo());
+                sentenca.setString(3, humano.getRotulo());
+                sentenca.setString(4, humano.getFotoHumano());
+                sentenca.setInt(5, humano.getIdHumano());
+                
+                sentenca.execute();
+                sentenca.close();
+                
+                sentenca = this.conexao.getConnection().prepareStatement(sqlEndereco);
+                sentenca.setString(1, humano.getLogradouro());
+                sentenca.setInt(2, humano.getNumero());
+                sentenca.setString(3, humano.getComplemento());
+                sentenca.setString(4, humano.getBairro());
+                sentenca.setString(5, humano.getCidade());
+                sentenca.setString(6, humano.getEstado());
+                sentenca.setString(7, humano.getCep());
+                sentenca.setInt(8, humano.getIdHumano());
                 
                 sentenca.execute();
                 sentenca.close();

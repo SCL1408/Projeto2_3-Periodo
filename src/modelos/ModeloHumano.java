@@ -113,6 +113,96 @@ public class ModeloHumano {
         }
     }
     
+    public ModeloHumano(String estado, int flag){
+        this.estado = estado;
+        switch (estado.toUpperCase()) {
+            case "ACRE":
+                this.sigla = "AC";
+                break;
+            case "ALAGOAS":
+                this.sigla = "AL";
+                break;
+            case "AMAPÁ":
+                this.sigla = "AP";
+                break;
+            case "AMAZONAS":
+                this.sigla = "AM";
+                break;
+            case "BAHIA":
+                this.sigla = "BA";
+                break;
+            case "CEARÁ":
+                this.sigla = "CE";
+                break;
+            case "DISTRITO FEDERAL":
+                this.sigla = "DF";
+                break;
+            case "ESPÍRITO SANTO":
+                this.sigla = "ES";
+                break;
+            case "GOIÁS":
+                this.sigla = "GO";
+                break;
+            case "MARANHÃO":
+                this.sigla = "MA";
+                break;
+            case "MATO GROSSO":
+                this.sigla = "MT";
+                break;
+            case "MATO GROSSO DO SUL":
+                this.sigla = "MS";
+                break;
+            case "MINAS GERAIS":
+                this.sigla = "MG";
+                break;
+            case "PARÁ":
+                this.sigla = "PA";
+                break;
+            case "PARAÍBA":
+                this.sigla = "PB";
+                break;
+            case "PARANÁ":
+                this.sigla = "PR";
+                break;
+            case "PERNAMBUCO":
+                this.sigla = "PE";
+                break;
+            case "PIAUÍ":
+                this.sigla = "PI";
+                break;
+            case "RIO DE JANEIRO":
+                this.sigla = "RJ";
+                break;
+            case "RIO GRANDE DO NORTE":
+                this.sigla = "RN";
+                break;
+            case "RIO GRANDE DO SUL":
+                this.sigla = "RS";
+                break;
+            case "RONDÔNIA":
+                this.sigla = "RO";
+                break;
+            case "RORAIMA":
+                this.sigla = "RR";
+                break;
+            case "SANTA CATARINA":
+                this.sigla = "SC";
+                break;
+            case "SÃO PAULO":
+                this.sigla = "SP";
+                break;
+            case "SERGIPE":
+                this.sigla = "SE";
+                break;
+            case "TOCANTINS":
+                this.sigla = "TO";
+                break;
+            default:
+                this.sigla = sigla;
+                break;
+        }
+    }
+    
     public ModeloHumano(int idHumano, String nomeHumano, int idSexo, int idRotulo, String sexo, String rotulo, String fotoHumano, String logradouro, int numero, String complemento, String bairro, String cidade, String estado, String cep) {
         this.idHumano = idHumano;
         this.nomeHumano = nomeHumano;
